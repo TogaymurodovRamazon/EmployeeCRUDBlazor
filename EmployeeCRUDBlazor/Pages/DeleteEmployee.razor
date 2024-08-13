@@ -1,0 +1,86 @@
+﻿@page "/DeleteEmployee/{Id}"
+@using EmployeeCRUDBlazor.Data
+@inject EmployeeService employeeService
+@inject NavigationManager navigationManager
+
+<h3>Delete Employee</h3>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="for-group">
+                <label for="Id" class="control-label">No</label>
+                <label>@employe.Id</label>
+            </div>
+            <div class="for-group">
+                <label for="FirstName" class="control-label">First Name</label>
+                <label>@employe.FirstName</label>
+            </div>
+            <div class="for-group">
+                <label for="MiddleName" class="control-label">Middle Name</label>
+                <label>@employe.MiddleName</label>
+            </div>
+            <div class="for-group">
+                <label for="LastName" class="control-label">Last Name</label>
+                <label>@employe.LastName</label>
+            </div>
+            <div class="for-group">
+                <label for="Email" class="control-label">Email Address</label>
+                <label>@employe.EmailAddress</label>
+            </div>
+            <div class="for-group">
+                <label for="PhoneNumber" class="control-label">Phone Number</label>
+                <label>@employe.PhoneNumber</label>
+            </div>
+            <div class="for-group">
+                <label for="PostalCode" class="control-label">Postal Code</label>
+                <label>@employe.PostalCode</label>
+            </div>
+            <div class="for-group">
+                <label for="Address" class="control-label">Address</label>
+                <label>@employe.Address</label>
+            </div>
+            <div class="for-group">
+                <label for="City" class="control-label">City</label>
+                <label>@employe.City</label>
+            </div>
+            <div class="for-group">
+                <label for="Designation" class="control-label">Designation</label>
+                <label>@employe.Designation</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@DeleteEmployeeRecord" value="Delete Employee" />
+                <input type="button" class="btn btn-danger" @onclick="@Cancel" value="Cansel" />
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    Employees employe = new Employees();
+
+    protected override async Task OnInitializedAsync()
+    {
+        employe = await Task.Run(() => employeeService.GetEmployeesById(Convert.ToInt32(Id)));
+    }
+
+    protected  async void DeleteEmployeeRecord()
+    {
+        await employeeService.DeleteEmployees(employe);
+        navigationManager.NavigateTo("Employees");
+    }
+
+    protected async void Cancel()
+    {
+        navigationManager.NavigateTo("Employees");
+    }
+}
